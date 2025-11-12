@@ -70,7 +70,7 @@ def login():
         token = create_token(username)
         return jsonify({'token': token})
     else:
-        return jsonify({'error': 'Invalid credentials'}), 401
+        return jsonify({'error': 'Credenciais inválidas'}), 401
     
 @app.route('/predict', methods=['POST'])
 @token_required
