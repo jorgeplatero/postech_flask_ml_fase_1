@@ -88,11 +88,11 @@ def home():
                         example: online
                     message:
                         type: string
-                        example: API de Predição Iris está rodando. Acesse /apidocs para documentação.
+                        example: Bem-vindo à API de predição Iris. Acesse /apidocs para documentação..
     '''
     return jsonify({
         'status': 'online',
-        'message': 'API de Predição Iris está rodando. Acesse /apidocs para documentação.'
+        'message': 'Bem-vindo à API de predição Iris. Acesse /apidocs para documentação.'
     })
 
 @app.route('/login', methods=['POST'])
