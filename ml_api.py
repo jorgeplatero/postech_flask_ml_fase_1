@@ -8,6 +8,7 @@ import joblib
 import numpy as np
 from sqlalchemy import create_engine, Column, Integer, Float, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
+from flasgger import Swagger
 
 
 #configurações de JWT e logs
@@ -40,6 +41,8 @@ model = joblib.load('model_iris.pkl')
 logger.info('Modelo carregado com sucesso')
 
 app = Flask(__name__)
+swagger = Swagger(app)
+
 prediction_cache = {}
 
 TEST_USERNAME = 'admin'
@@ -63,6 +66,34 @@ def token_required(f):
 
 @app.route('/login', methods=['POST'])
 def login():
+    '''
+    Gera um token JWT para autenticação.
+    ---
+    parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+              type: object
+              properties:
+                  username:
+                      type: string
+                      example: admin
+                  password:
+                      type: string
+                      example: secret
+    responses:
+        200:
+            description: Login bem sucedido, retorna o token JWT
+            schema:
+                type: object
+                properties:
+                    token:
+                        type: string
+                        description: O token de acesso JWT
+        401:
+            description: Credenciais inválidas
+    '''
     data = request.get_json(force=True)
     username = data.get('username')
     password = data.get('password')
@@ -76,14 +107,50 @@ def login():
 @token_required
 def predict():
     '''
-    Endpoint protegido por token para obter predição.
-    Body (JSON):
-    {
-    'sepal_length': 5.1,
-    'sepal_width': 3.5
-    'petal_length': 1.4
-    'petal_width': 0.2
-    }
+    Realiza uma predição com o modelo Iris e armazena o resultado.
+    ---
+    security:
+        - Bearer: []
+    parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+              type: object
+              properties:
+                  sepal_length:
+                      type: number
+                      format: float
+                      description: Comprimento da sépala (cm).
+                      example: 5.1
+                  sepal_width:
+                      type: number
+                      format: float
+                      description: Largura da sépala (cm).
+                      example: 3.5
+                  petal_length:
+                      type: number
+                      format: float
+                      description: Comprimento da pétala (cm).
+                      example: 1.4
+                  petal_width:
+                      type: number
+                      format: float
+                      description: Largura da pétala (cm).
+                      example: 0.2
+    responses:
+        200:
+            description: Predição realizada com sucesso
+            schema:
+                type: object
+                properties:
+                    predicted_class:
+                        type: integer
+                        description: "Classe prevista (ex: 0, 1 ou 2)"
+        400:
+            description: Dados de entrada inválidos
+        401:
+            description: Token não fornecido ou inválido/expirado
     '''
     data = request.get_json(force=True)
     try:
@@ -128,13 +195,48 @@ def predict():
 @token_required
 def list_predictions():
     '''
-    Lista as predições armazenadas no banco.
-
-    Parâmetros opcionais (via query string):
-    - limit (int): quantos registros retornar, padrão 10
-    - offset (int): a partir de qual registro começar, padrão 0
-    Exemplo:
-    /predictions?limit=5&offset=10
+    Lista as predições armazenadas no banco, com paginação.
+    ---
+    security:
+        - Bearer: []
+    parameters:
+        - in: query
+          name: limit
+          type: integer
+          required: false
+          default: 10
+          description: Número máximo de registros para retornar.
+        - in: query
+          name: offset
+          type: integer
+          required: false
+          default: 0
+          description: Número de registros a ignorar (para paginação).
+    responses:
+        200:
+            description: Lista de predições.
+            schema:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        sepal_length:
+                            type: number
+                        sepal_width:
+                            type: number
+                        petal_length:
+                            type: number
+                        petal_width:
+                            type: number
+                        predicted_class:
+                            type: integer
+                        created_at:
+                            type: string
+                            format: date-time
+        401:
+            description: Token não fornecido ou inválido/expirado
     '''
     limit = int(request.args.get('limit', 10))
     offset = int(request.args.get('offset', 0))
