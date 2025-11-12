@@ -98,7 +98,7 @@ Resposta de sucesso (JSON):
 
 ```json
     {
-        "predicted_class": 0
+        "predicted_species": "virginica"
     }
 ```
 

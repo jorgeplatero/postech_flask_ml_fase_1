@@ -11,6 +11,13 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from flasgger import Swagger
 
 
+#mapeamento da target para o nome da espécie
+CLASS_NAMES = {
+    0: 'setosa',
+    1: 'versicolor',
+    2: 'virginica'
+}
+
 #configurações de JWT e logs
 JWT_SECRET = 'MEUSEGREDOAQUI'
 JWT_ALGORITHM = 'HS256'
@@ -33,6 +40,7 @@ class Prediction(Base):
     petal_length = Column(Float, nullable=False)
     petal_width = Column(Float, nullable=False)
     predicted_class = Column(Integer, nullable=False)
+    predicted_species = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
 Base.metadata.create_all(engine)
@@ -199,6 +207,7 @@ def predict():
         prediction_cache[features] = predicted_class
         logger.info('Cache updated para %s', features)
 
+    predicted_species_name = CLASS_NAMES.get(predicted_class)
     #armazenar em db
     db = SessionLocal()
     new_pred = Prediction(
@@ -206,13 +215,14 @@ def predict():
         sepal_width=sepal_width,
         petal_length=petal_length,
         petal_width=petal_width,
-        predicted_class=predicted_class
+        predicted_class=predicted_class,
+        predicted_species=predicted_species_name
     )
     db.add(new_pred)
     db.commit()
     db.close()
 
-    return jsonify({'predicted_class': predicted_class})
+    return jsonify({'predicted_species': predicted_species_name})
 
 @app.route('/predictions', methods=['GET'])
 @token_required
@@ -276,6 +286,7 @@ def list_predictions():
             'petal_length': p.petal_length,
             'petal_width': p.petal_width,
             'predicted_class': p.predicted_class,
+            'predicted_species': p.predicted_species,
             'created_at': p.created_at.isoformat()
         })
 
