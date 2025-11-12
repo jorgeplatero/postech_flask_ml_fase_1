@@ -9,7 +9,7 @@
     "routes": [
         {
             "src": "/(.*)",
-            "use": "ml_api.py"
+            "dest": "ml_api.py"
         }
     ]
 }
