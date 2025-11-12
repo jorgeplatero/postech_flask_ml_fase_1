@@ -138,8 +138,8 @@ def list_predictions():
     '''
     limit = int(request.args.get('limit', 10))
     offset = int(request.args.get('offset', 0))
-    preds = db.query(Prediction).order_by(Prediction.id.desc()).limit(limit).offset(offset).all() 
     db = SessionLocal()
+    preds = db.query(Prediction).order_by(Prediction.id.desc()).limit(limit).offset(offset).all() 
     db.query(Prediction).order_by(Prediction.id.desc()).limit(limit).offset(offset).all()
     db.close()
     results = []
