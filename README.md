@@ -40,7 +40,22 @@ A API estará rodando em http://127.0.0.1:5000/
 
 O acesso aos endpoints de predição e histórico (/predict e /predictions) requer um JWT válido.
 
-1. Login (/login)
+1. Home (/)
+
+Endpoint raiz da API com status e boas-vindas. Não requer autenticação.
+
+- Método: GET
+
+Resposta de sucesso (JSON):
+
+```json
+{
+    "message": "API de Predição Iris está rodando. Acesse /apidocs para documentação.",
+    "status": "online"
+}
+```
+
+2. Login (/login)
 
 Use este endpoint para obter um token de acesso.
 
@@ -62,7 +77,7 @@ Resposta de sucesso (JSON):
     }
 ```
 
-2. Predição (/predict)
+3. Predição (/predict)
 
 Endpoint protegido que recebe os parâmetros da flor e retorna a classe prevista, além de armazenar o registro no banco de dados (predictions.db).
 
@@ -87,7 +102,7 @@ Resposta de sucesso (JSON):
     }
 ```
 
-3. Histórico de Predições (/predictions)
+4. Histórico de Predições (/predictions)
 
 Endpoint protegido que lista as predições armazenadas.
 
