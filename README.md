@@ -54,7 +54,7 @@ Use este endpoint para obter um token de acesso.
 }
 ```
 
-Resposta de Sucesso (JSON):
+Resposta de sucesso (JSON):
 
 ```json
     {
@@ -79,7 +79,7 @@ Endpoint protegido que recebe os parâmetros da flor e retorna a classe prevista
 }
 ```
 
-Resposta de Sucesso (JSON):
+Resposta de sucesso (JSON):
 
 ```json
     {
@@ -97,7 +97,7 @@ Endpoint protegido que lista as predições armazenadas.
     - limit (int): máximo de registros a retornar (padrão: 10).
     - offset (int): posição inicial dos registros (padrão: 0).
 - Exemplo: /predictions?limit=5&offset=10
-- Resposta de Sucesso (JSON): uma lista de objetos de predição.
+- Resposta de sucesso (JSON): uma lista de objetos de predição.
 
 ### ☁️ Deploy no Vercel
 

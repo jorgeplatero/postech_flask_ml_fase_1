@@ -64,6 +64,29 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
+@app.route('/')
+def home():
+    '''
+    Endpoint raiz da API.
+    ---
+    responses:
+        200:
+            description: Mensagem de boas-vindas e status da API.
+            schema:
+                type: object
+                properties:
+                    status:
+                        type: string
+                        example: online
+                    message:
+                        type: string
+                        example: API de Predição Iris está rodando. Acesse /apidocs para documentação.
+    '''
+    return jsonify({
+        'status': 'online',
+        'message': 'API de Predição Iris está rodando. Acesse /apidocs para documentação.'
+    })
+
 @app.route('/login', methods=['POST'])
 def login():
     '''
