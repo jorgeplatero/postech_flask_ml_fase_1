@@ -50,7 +50,7 @@ Resposta de sucesso (JSON):
 
 ```json
 {
-    "message": "API de Predição Iris está rodando. Acesse /apidocs para documentação.",
+    "message": "Bem-vindo à API de predição Iris. Acesse /apidocs para documentação.",
     "status": "online"
 }
 ```
@@ -79,7 +79,7 @@ Resposta de sucesso (JSON):
 
 3. Predição (/predict)
 
-Endpoint protegido que recebe os parâmetros da flor e retorna a classe prevista, além de armazenar o registro no banco de dados (predictions.db).
+Endpoint protegido que recebe os parâmetros da flor e retorna a espécie prevista, além de armazenar o registro no banco de dados (predictions.db).
 
 - Método: POST
 - Header: Authorization: Bearer [TOKEN_RECEBIDO]
