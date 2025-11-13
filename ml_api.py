@@ -176,8 +176,8 @@ def predict():
                 type: object
                 properties:
                     predicted_class:
-                        type: integer
-                        description: "Classe prevista (ex: 0, 1 ou 2)"
+                        type: string
+                        description: "Classe prevista (ex: setosa, versicolor ou virginica)"
         400:
             description: Dados de entrada inválidos
         401:
@@ -265,6 +265,8 @@ def list_predictions():
                             type: number
                         predicted_class:
                             type: integer
+                        predicted_species:
+                            type: string
                         created_at:
                             type: string
                             format: date-time
