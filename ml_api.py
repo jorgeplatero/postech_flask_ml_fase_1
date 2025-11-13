@@ -175,7 +175,7 @@ def predict():
             schema:
                 type: object
                 properties:
-                    predicted_class:
+                    predicted_species:
                         type: string
                         description: "Classe prevista (ex: setosa, versicolor ou virginica)"
         400:
