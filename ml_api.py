@@ -67,8 +67,33 @@ def create_token(username):
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        #pegar o token do eader authorization: bearer <token>
-        #decodificar e checar expiração
+        token = None
+        #tenta obter o cabeçalho "Authorization"
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            #verifica se o formato é "Bearer <token>" e extrai o token
+            if auth_header.startswith('Bearer '):
+                token = auth_header.split(' ')[1]
+        #se o token não foi encontrado, retorna erro
+        if not token:
+            logger.warning('Token ausente na requisição')
+            return jsonify({'message': 'Token não informado'}), 401
+        try:
+            #decodifica o token usando a chave secreta e o algoritmo
+            #se o token estiver expirado, Inválido ou a assinatura estiver errada,
+            #o método .decode() lança uma exceção.
+            data = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        #trata erros de token inválido (expirado, assinatura incorreta, etc.)
+        except jwt.ExpiredSignatureError:
+            logger.warning('Token expirado')
+            return jsonify({'message': 'Token expirado'}), 401
+        except (jwt.InvalidSignatureError, jwt.DecodeError):
+            logger.warning('Assinatura de token inválida ou erro de decodificação')
+            return jsonify({'message': 'Token não fornecido ou inválido'}), 401
+        except Exception as e:
+            logger.error('Erro geral na decodificação do token: %s', e)
+            return jsonify({'message': 'Erro de autenticação'}), 401
+        #se tudo acima funcionou, chama a função original (o endpoint da API)
         return f(*args, **kwargs)
     return decorated
 
@@ -179,9 +204,9 @@ def predict():
                         type: string
                         description: "Classe prevista (ex: setosa, versicolor ou virginica)"
         400:
-            description: Dados de entrada inválidos
+            description: Dados inválidos, verifique parâmetros
         401:
-            description: Token não fornecido ou inválido/expirado
+            description: Token não informado/Token não fornecido ou inválido/Token expirado
     '''
     data = request.get_json(force=True)
     try:
@@ -190,7 +215,7 @@ def predict():
         petal_length = float(data['petal_length'])
         petal_width = float(data['petal_width'])
     except (ValueError, KeyError) as e:
-        logger.error('Dados de entreda inválidos')
+        logger.error('Dados de entrada inválidos')
         return jsonify({'error': 'Dados inválidos, verifique parâmetros'}), 400
     
     #verificar se já está no cache
@@ -271,7 +296,7 @@ def list_predictions():
                             type: string
                             format: date-time
         401:
-            description: Token não fornecido ou inválido/expirado
+            description: Token não informado/Token não fornecido ou inválido/Token expirado
     '''
     limit = int(request.args.get('limit', 10))
     offset = int(request.args.get('offset', 0))
