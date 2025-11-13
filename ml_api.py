@@ -89,7 +89,7 @@ def token_required(f):
             return jsonify({'message': 'Token expirado'}), 401
         except (jwt.InvalidSignatureError, jwt.DecodeError):
             logger.warning('Assinatura de token inválida ou erro de decodificação')
-            return jsonify({'message': 'Token não fornecido ou inválido'}), 401
+            return jsonify({'message': 'Token inválido'}), 401
         except Exception as e:
             logger.error('Erro geral na decodificação do token: %s', e)
             return jsonify({'message': 'Erro de autenticação'}), 401
@@ -206,7 +206,7 @@ def predict():
         400:
             description: Dados inválidos, verifique parâmetros
         401:
-            description: Token não informado/Token não fornecido ou inválido/Token expirado
+            description: Token não informado/Token inválido/Token expirado/Erro de autenticação
     '''
     data = request.get_json(force=True)
     try:
@@ -296,7 +296,7 @@ def list_predictions():
                             type: string
                             format: date-time
         401:
-            description: Token não informado/Token não fornecido ou inválido/Token expirado
+            description: Token não informado/Token inválido/Token expirado/Erro de autenticação
     '''
     limit = int(request.args.get('limit', 10))
     offset = int(request.args.get('offset', 0))
