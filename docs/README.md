@@ -30,7 +30,7 @@ O projeto deve conter os seguintes arquivos na raiz:
 
 * **`api.py`**: O arquivo principal da aplicação **Flask**, onde as rotas (endpoints da API) são definidas.
 * **`config.py`**: Contém variáveis de configuração para diferentes ambientes (desenvolvimento, produção).
-* **`model_iris.pkl`**: O modelo de machine learning serializado (neste caso, para a classificação Iris).
+* **`model.pkl`**: O modelo de machine learning serializado (neste caso, para a classificação Iris).
 * **`models.py`**: Contém a lógica de definição e interação com os dados, ou as classes/funções relacionadas ao modelo de ML.
 
 ### ▶️ Como Rodar a Aplicação Localmente
