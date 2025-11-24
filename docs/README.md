@@ -1,6 +1,6 @@
 # API Flask para Predição de Espécies Iris
 
-Esta é uma API RESTful construída com Flask que utiliza um modelo de Machine Learning (ML) treinado para prever espécies Iris. A API é protegida por autenticação via JWT e armazena o histórico de predições em um banco de dados SQLite.
+Esta é uma API RESTful construída com Flask que utiliza um modelo de Machine Learning (ML) treinado para prever espécies Iris. A API é protegida por autenticação via JWT e armazena o histórico de predições em um banco de dados SQLite. 
 
 ### Pré-requisitos
 
@@ -151,14 +151,14 @@ A aplicação atua como a camada de serviço (API) que interage com o cliente e 
 
 ### Integrações
 
-A API em produção no Vercel recebe requisições de aplicativo web Streamlit, cujo link e repositório pode ser acessado no link abaixo:
+A API em produção no Vercel recebe requisições de aplicativo web Streamlit, cujo link e repositório pode ser acessado em:
 
-Streamlit: `https://preditorespeciesiris.streamlit.app/`
+Streamlit: https://preditorespeciesiris.streamlit.app/
 
-Repositório GitHub: `https://github.com/jorgeplatero/preditor_especies_iris`
+Repositório GitHub: https://github.com/jorgeplatero/preditor_especies_iris
 
 ### Deploy no Vercel
 
 Esta API possui arquivo de configuração para Deploy no Vercel. Para realizar o deploy, certifique-se de que o arquivo vercel.json esteja na raiz, apontando para api.py como fonte principal. O Vercel gerenciará o ambiente com base no pyproject.toml. 
 
-A persistência de dados em produção foi realizada intregando a API com o serviço Neon Serverless PostgreSQL. Em produção, altere a variável JWT_SECRET para uma chave forte e armazene-a como variável de ambiente na seção Environment Variables
+A persistência de dados em produção foi realizada intregando a API com o serviço Neon Serverless PostgreSQL. Em produção, altere a variável JWT_SECRET para uma chave forte e armazene-a como variável de ambiente na seção Environment Variables.
