@@ -24,14 +24,24 @@ poetry install
 
 O Poetry criará um ambiente virtual isolado e instalará todas as bibliotecas necessárias.
 
-### 📂 Estrutura do Projeto
+### Tecnologias
 
-O projeto deve conter os seguintes arquivos na raiz:
+A aplicação atua como a camada de serviço (API) que interage com o cliente e o banco de dados.
 
-* **`api.py`**: O arquivo principal da aplicação **Flask**, onde as rotas (endpoints da API) são definidas.
-* **`config.py`**: Contém variáveis de configuração para diferentes ambientes (desenvolvimento, produção).
-* **`model.pkl`**: O modelo de machine learning serializado (neste caso, para a classificação Iris).
-* **`models.py`**: Contém a lógica de definição e interação com os dados, ou as classes/funções relacionadas ao modelo de ML.
+| Componente | Tecnologia | Versão (Especificada) | Descrição |
+| :--- | :--- | :--- | :--- |
+| **Backend/API** | **Flask** | `>=3.1.2, <4.0.0` | Framework Python leve para o desenvolvimento da API RESTful. |
+| **Machine Learning** | **Scikit-learn** | `>=1.7.2, <2.0.0` | Biblioteca para o treinamento e carregamento do modelo de classificação Iris. |
+| **Serialização de Modelo** | **Joblib** | `>=1.5.2, <2.0.0` | Utilizada para salvar e carregar eficientemente o modelo de ML treinado. |
+| **Autenticação** | **Flask-JWT-Extended** | `>=4.7.1, <5.0.0` | Implementa a segurança por JSON Web Tokens. |
+| **Criptografia (Senhas)** | **Flask-Bcrypt** | `>=1.0.1, <2.0.0` | Gerencia o *hashing* seguro de senhas de usuário. |
+| **Persistência/ORM** | **Flask-SQLAlchemy** | `>=3.1.1, <4.0.0` | Camada ORM para interagir com o banco de dados (PostgreSQL/SQLite). |
+| **Driver DB (Postgres)** | **psycopg2-binary** | `>=2.9.11, <3.0.0` | Driver para conexão com o banco de dados PostgreSQL (ex: Neo Serverless Postgres). |
+| **Documentação** | **Flasgger** | `>=0.9.7.1, <0.10.0.0` | Cria a documentação Swagger/OpenAPI interativa para a API. |
+| **Ambiente** | **Python** | `>=3.11, <4.0` | Versões compatíveis para a execução do projeto. |
+| **Gerenciamento** | **Poetry** | `2.2.1` | Gerenciador de dependências, usado para construir e gerenciar o ambiente. |
+
+---
 
 ### ▶️ Como Rodar a Aplicação
 
@@ -57,7 +67,7 @@ Resposta de sucesso (JSON):
 
 ```json
 {
-    "message": "Bem-vindo à API de predição Iris. Acesse /apidocs para documentação.",
+    "msg": "Bem-vindo à API de predição Iris. Acesse /apidocs para documentação.",
     "status": "online"
 }
 ```
@@ -131,7 +141,7 @@ Resposta de sucesso (JSON):
     }
 ```
 
-5. Histórico de Predições (/predictions)
+5. Histórico de predições (/predictions)
 
 Endpoint protegido que lista as predições armazenadas.
 
@@ -145,7 +155,7 @@ Endpoint protegido que lista as predições armazenadas.
 
 ### ☁️ Deploy no Vercel
 
-Esta API está configurada para Deploy Serverless no Vercel. A persistência de dados (histórico de predições) foi atualizada para utilizar o Neon (PostgreSQL Serverless).
+Esta API está configurada para Deploy no Vercel. A persistência de dados (histórico de predições) foi utiliza o Neon Serverless PostgreSQL.
 
 Para realizar o deploy, certifique-se de que o arquivo vercel.json esteja na raiz, apontando para api.py como fonte principal. O Vercel gerenciará o ambiente com base no pyproject.toml.
 
