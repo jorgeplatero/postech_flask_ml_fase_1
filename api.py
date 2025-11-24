@@ -48,7 +48,7 @@ def unauthorized_callback(callback):
     if 'Missing' in str(callback) or 'Authorization header' in str(callback):
         return jsonify({'msg': 'Token não informado'}), 401
     return jsonify({
-        'msg': 'Erro de autenticação'
+        'error': 'Erro de autenticação'
     }), 401
 
 @jwt.invalid_token_loader
@@ -56,14 +56,14 @@ def invalid_token_callback(err):
     '''Retorna quando o token é malformado (ex: erro de padding, assinatura inválida).'''
     logger.error(f'Erro de token inválido: {err}')
     return jsonify({
-        'msg': 'Token inválido'
+        'error': 'Token inválido'
     }), 401
 
 @jwt.expired_token_loader
 def expired_token_callback(header, payload):
     '''Retorna quando o token é válido, mas o tempo de expiração já passou.'''
     return jsonify({
-        'msg': 'Token expirado'
+        'error': 'Token expirado'
     }), 401
 
 @app.route('/')
@@ -77,7 +77,7 @@ def home():
     '''
     return jsonify({
         'status': 'online',
-        'message': 'Bem-vindo à API de predição Iris. Acesse /apidocs para documentação.' 
+        'msg': 'Bem-vindo à API de predição Iris. Acesse /apidocs para documentação.' 
     })
 
 
