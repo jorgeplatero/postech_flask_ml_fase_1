@@ -33,7 +33,7 @@ O projeto deve conter os seguintes arquivos na raiz:
 * **`model.pkl`**: O modelo de machine learning serializado (neste caso, para a classificação Iris).
 * **`models.py`**: Contém a lógica de definição e interação com os dados, ou as classes/funções relacionadas ao modelo de ML.
 
-### ▶️ Como Rodar a Aplicação Localmente
+### ▶️ Como Rodar a Aplicação
 
 Execute o script Python:
 
